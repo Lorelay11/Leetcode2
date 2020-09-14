@@ -1,0 +1,83 @@
+class Solution {
+    public String addBinary(String a, String b) {
+    String aR = reverse(a);
+    String bR = reverse(b);
+    String resultR = mySum(aR, bR);
+    return reverse(resultR);
+        
+        
+}
+    public static String reverse(String normal) {
+        char[] ch = new char[normal.length()];
+        for (int i = 0; i < normal.length(); i++) {
+            ch[i] = normal.charAt(i);
+        }
+        char[] myArray = new char[normal.length()];
+        int i = normal.length()-1;
+        int j = 0;
+        while (j < normal.length()) {
+            myArray[j] = ch[i];
+            i--;
+            j++;
+        }
+        return new String(myArray);
+    }
+    public static String mySum(String a, String b){
+        StringBuilder result = new StringBuilder();
+        String longer = "";
+        int carry = 0;
+        int i = 0;
+        int f = a.length();
+        int s = b.length();
+        int maxLen = Math.max(f,s);
+        int minLen = Math.min(f,s);
+        int dif = Math.abs(f-s);
+        if(a.length()>b.length()){
+            longer = a;
+        }if (a.length()<b.length()){
+            longer = b;
+        }
+        while(i<minLen){
+            if ((a.charAt(i) == '1') && (b.charAt(i) == '1') && (carry == 1)){
+                result.append("1");
+                carry = 1;
+                i++;
+            }else if (((a.charAt(i)=='1') && (b.charAt(i)=='1') && (carry==0))||((a.charAt(i)=='0') && (b.charAt(i)=='1') && (carry==1))|| ((a.charAt(i)=='1') && (b.charAt(i)=='0') && (carry==1 ))){
+                result.append("0");
+                carry = 1;
+                i++;
+            }else if (((a.charAt(i)=='0') && (b.charAt(i)=='1' && carry==0))||((a.charAt(i)=='1') && (b.charAt(i)=='0') && (carry==0))|| ((a.charAt(i)=='0') && (b.charAt(i)=='0') && (carry==1 ))){
+                result.append("1");
+                carry = 0;
+                i++;
+            }else{
+                result.append("0");
+                carry = 0;
+                i++;
+            }
+
+        }
+
+        while(dif>0){
+            if(longer.charAt(maxLen-dif) == '1' && carry==1) {
+                    result.append("0");
+                    carry = 1;
+                    dif--;
+            }else if  ((longer.charAt(maxLen-dif) == '0' && carry==1)||(longer.charAt(maxLen-dif) == '1' && carry==0)) {
+                    result.append("1");
+                    carry = 0;
+                    dif--;
+            }else{
+                    result.append("0");
+                    carry = 0;
+                    dif--;
+            }
+        }
+
+        if (dif==0 && carry==1){
+            result.append("1");
+        }
+        return result.toString();
+    }
+}    
+    
